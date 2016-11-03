@@ -2,7 +2,6 @@ import 'dart:io';
 
 /// Class to be used to parse sass transformer options coming from pubspec.yaml file
 class TransformerOptions {
-
   /// include_path: /lib/sassIncludes - variable and mixims files
   final Set<String> includePaths;
 
@@ -25,18 +24,17 @@ class TransformerOptions {
   final bool copySources;
 
   /// Creates [TransformerOptions] from options values
-  TransformerOptions._({
-    this.includePaths,
-    this.output,
-    this.executable,
-    this.style,
-    this.compass,
-    this.lineNumbers,
-    this.copySources
-  });
+  TransformerOptions._(
+      {this.includePaths,
+      this.output,
+      this.executable,
+      this.style,
+      this.compass,
+      this.lineNumbers,
+      this.copySources});
 
   /// Creates a [TransformerOptions] object from [configuration] Map
-  factory TransformerOptions(Map configuration){
+  factory TransformerOptions(Map configuration) {
     config(key, defaultValue) {
       var value = configuration[key];
       return value ?? defaultValue;
@@ -51,11 +49,11 @@ class TransformerOptions {
     return new TransformerOptions._(
         includePaths: readStringList(configuration['include_paths'], []),
         output: config('output', ''),
-        executable: config('executable', (Platform.operatingSystem == "windows" ? "sass.bat" : "sass")),
+        executable: config('executable',
+            (Platform.operatingSystem == "windows" ? "sass.bat" : "sass")),
         style: config("style", null),
         compass: config("compass", false),
         lineNumbers: config("line_numbers", false),
-        copySources: config("copy_sources", false)
-    );
+        copySources: config("copy_sources", false));
   }
 }

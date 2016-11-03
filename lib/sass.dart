@@ -7,7 +7,6 @@ import 'package:path/path.dart' as path;
 
 /// Facade for Sass-transformations.
 class Sass {
-
   String executable = defaultExecutable;
   bool scss = false;
   String style = null; // nested, compact, compressed, expanded
@@ -15,7 +14,8 @@ class Sass {
   bool lineNumbers = false;
   bool compass = false;
 
-  static get defaultExecutable => (Platform.operatingSystem == "windows" ? "sass.bat" : "sass") ;
+  static get defaultExecutable =>
+      (Platform.operatingSystem == "windows" ? "sass.bat" : "sass");
 
   /// Transforms given Sass-source to CSS.
   Future<String> transform(String content) {
@@ -33,14 +33,19 @@ class Sass {
       process.stdin.writeln();
 
       process.stdin.close();
-      process.stdout.transform(new Utf8DecoderTransformer()).listen((str) => output.write(str));
-      process.stderr.transform(new Utf8DecoderTransformer()).listen((str) => errors.write(str));
+      process.stdout
+          .transform(new Utf8DecoderTransformer())
+          .listen((str) => output.write(str));
+      process.stderr
+          .transform(new Utf8DecoderTransformer())
+          .listen((str) => errors.write(str));
 
       return process.exitCode.then((exitCode) {
         if (exitCode == 0) {
           return output.toString();
         } else {
-          throw new Exception(errors.length != 0 ? errors.toString() : output.toString());
+          throw new Exception(
+              errors.length != 0 ? errors.toString() : output.toString());
         }
       });
     }).catchError((ProcessException e) {
@@ -54,29 +59,22 @@ class Sass {
 
     if (sassc) {
       // check that we don't try to use features not supported by sassc
-      if (!scss)
-        throw new Exception("SassC supports only scss syntax");
+      if (!scss) throw new Exception("SassC supports only scss syntax");
 
-      if (compass)
-        throw new Exception("SassC does not support Compass");
-
+      if (compass) throw new Exception("SassC does not support Compass");
     } else {
       // classic sass
       flags.add('--no-cache');
 
-      if (scss)
-        flags.add('--scss');
+      if (scss) flags.add('--scss');
 
-      if (compass)
-        flags.add('--compass');
+      if (compass) flags.add('--compass');
     }
 
     // we have to use the short argument names here since SassC does not support the long ones
-    if (lineNumbers)
-      flags.add('-l');
+    if (lineNumbers) flags.add('-l');
 
-    if (style != null)
-      flags..add('-t')..add(style);
+    if (style != null) flags..add('-t')..add(style);
 
     loadPath.forEach((dir) {
       // Normalize the load paths to platform's native format
