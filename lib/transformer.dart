@@ -23,6 +23,7 @@ class SassTransformer extends AggregateTransformer {
 
   Future apply(AggregateTransform transform) async {
     var assets = await transform.primaryInputs.toList();
+    print('[sass_transformer] processing files...');
 
     return Future.wait(assets.map((asset) async {
       var id = asset.id;
@@ -37,11 +38,8 @@ class SassTransformer extends AggregateTransformer {
       }
 
       var content = await transform.readInputAsString(id);
-      print('[sass_transformer] processing: ${id}');
 
       //TODO: add support for no-symlinks packages
-      if (mode == BarbackMode.DEBUG)
-        print('[sass_transformer] includePaths: ${options.includePaths}');
       try {
         var output = await (new Sass()
               ..scss = id.extension == '.scss'
