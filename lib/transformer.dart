@@ -40,8 +40,6 @@ class SassTransformer extends AggregateTransformer {
       print('[sass_transformer] processing: ${id}');
 
       //TODO: add support for no-symlinks packages
-      options.includePaths
-          .add(dirname(id.path).replaceFirst('lib', 'packages/${id.package}'));
       if (mode == BarbackMode.DEBUG)
         print('[sass_transformer] includePaths: ${options.includePaths}');
       try {
