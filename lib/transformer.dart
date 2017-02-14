@@ -42,8 +42,7 @@ class SassTransformer extends AggregateTransformer {
 
       var content = await transform.readInputAsString(id);
       if (options.verbose) {
-        print('[sass_transformer] processing: ${id}, ' +
-            'includePaths: ${options.includePaths}');
+        print('[sass_transformer] processing: ${id}');
       }
 
       //TODO: add support for no-symlinks packages
