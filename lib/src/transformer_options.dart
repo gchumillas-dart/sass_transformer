@@ -23,6 +23,9 @@ class TransformerOptions {
   /// Copy original .scss/.sass files to output directory
   final bool copySources;
 
+  /// Verbosity mode
+  final bool verbose;
+
   /// Creates [TransformerOptions] from options values
   TransformerOptions._(
       {this.includePaths,
@@ -31,7 +34,8 @@ class TransformerOptions {
       this.style,
       this.compass,
       this.lineNumbers,
-      this.copySources});
+      this.copySources,
+      this.verbose});
 
   /// Creates a [TransformerOptions] object from [configuration] Map
   factory TransformerOptions(Map configuration) {
@@ -54,6 +58,7 @@ class TransformerOptions {
         style: config("style", null),
         compass: config("compass", false),
         lineNumbers: config("line_numbers", false),
-        copySources: config("copy_sources", false));
+        copySources: config("copy_sources", false),
+        verbose: config("verbose", false));
   }
 }

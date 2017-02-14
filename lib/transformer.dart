@@ -11,7 +11,11 @@ import 'src/transformer_options.dart';
 class SassTransformer extends AggregateTransformer {
   SassTransformer.asPlugin(BarbackSettings settings)
       : options = new TransformerOptions(settings.configuration),
-        mode = settings.mode;
+        mode = settings.mode {
+    if (options.verbose) {
+      print('[sass_transformer] includePaths: ${options.includePaths}');
+    }
+  }
 
   final TransformerOptions options;
 
@@ -23,7 +27,6 @@ class SassTransformer extends AggregateTransformer {
 
   Future apply(AggregateTransform transform) async {
     var assets = await transform.primaryInputs.toList();
-    print('[sass_transformer] processing files...');
 
     return Future.wait(assets.map((asset) async {
       var id = asset.id;
@@ -38,6 +41,10 @@ class SassTransformer extends AggregateTransformer {
       }
 
       var content = await transform.readInputAsString(id);
+      if (options.verbose) {
+        print('[sass_transformer] processing: ${id}, ' +
+            'includePaths: ${options.includePaths}');
+      }
 
       //TODO: add support for no-symlinks packages
       try {
